@@ -1,5 +1,3 @@
-# ml_final_project
-machine learning project
 Because I have doubts on label encoding, I created different version for trying. Snitchnip and stooging are both foul type but the maximum # of Snitchnip in our data is >300 and the maximum # of stooging in our data is >8. Should they be encoded as the same integer? So >300 # of Snitchnip means the same as >8 # of stooging? This problem only affects the model with weights instead of random forests. 
  
 
