@@ -21,6 +21,8 @@ There are 4 values in stooging: 0,1,2,3 corresponds to None, Norm, >7, >8
 
 I encoded other features using one hot encoding.
 I left some comlumns with numerical values. 
+I converted the target to 0 or 1.
+0 stands for NO, 1 stands for YES.
 
 
 
