@@ -47,9 +47,13 @@ ordered_satisfaction = ["No","Ch"]
 cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
 df["change"]=df["change"].astype(cat_dtype).cat.codes
 #do one-hot endoing
+
 df=pd.get_dummies(df, columns=["house","foul_type_id","game_move_id","penalty_id","player_code","player_type"])
+'''
+df.drop(["house","foul_type_id","game_move_id","penalty_id","player_code","player_type"], axis=1,inplace=True)
 #do label encoding
 #version 1
+'''
 '''
 ordered_satisfaction = ["None", "Norm", ">7", ">8", ">200", ">300"]
 cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
@@ -71,30 +75,43 @@ dict=convert_move_specialty(df)
 df=map_features(["move_specialty"],df,dict)
 
 norm_columns=["age","game_duration","num_game_moves","num_game_losses","num_practice_sessions","num_games_satout","num_games_injured","num_games_notpartof","num_games_won","snitchnip","stooging"]
-scaler = preprocessing.MinMaxScaler()
+#scaler = preprocessing.MinMaxScaler()
+scaler = StandardScaler()
 for i in norm_columns:
 	df[i] = scaler.fit_transform(df[i].values.reshape(-1,1))
 
 df_target=pd.DataFrame(data=df["quidditch_league_player"])
 df.drop(["quidditch_league_player"], axis=1,inplace=True)
 '''
-x=df.values
+selected_columns=["age","game_duration","num_game_moves","num_game_losses","num_practice_sessions","num_games_satout","num_games_injured","num_games_notpartof","num_games_won","snitchnip","stooging"]
+df_numeric = df[selected_columns].copy()
+
+x=df_numeric.values
 y=df_target.values
-x=StandardScaler().fit_transform(x)
-covar_matrix = PCA(n_components = len(df.columns))
+#x=StandardScaler().fit_transform(x)
+covar_matrix = PCA(n_components = len(df_numeric.columns))
 covar_matrix.fit(x)
 variance = covar_matrix.explained_variance_ratio_
 var=np.cumsum(np.round(covar_matrix.explained_variance_ratio_, decimals=3)*100)   
 print (var)
 '''
+'''
 array=df.values
-array = StandardScaler().fit_transform(array)
-pca = PCA(n_components=len(df.columns)-9)
+#array = StandardScaler().fit_transform(array)
+#array = preprocessing.MinMaxScaler().fit_transform(array)
+n_components=len(df.columns)-9
+pca = PCA(n_components)
 array_new = pca.fit_transform(array)
 df_new=pd.DataFrame(array_new)
 df_new.insert(len(df_new.columns),"quidditch_league_player", df_target)
-df_new.to_csv("a.csv",index=False)
-#df.insert(len(df.columns),"quidditch_league_player", df_target)
-#df.to_csv("a.csv",index=False)
+df_new.to_csv("a.csv",header=False,index=False)
+'''
+
+df.insert(len(df.columns),"quidditch_league_player", df_target)
+df.to_csv("a.csv",index=False)
 #df_target.to_csv("b.csv",index=False)
+
+
+#df_numeric.insert(len(df_numeric.columns),"quidditch_league_player", df_target)
+#df_numeric.to_csv("a.csv",index=False)
 
