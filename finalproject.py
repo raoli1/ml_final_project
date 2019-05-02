@@ -48,7 +48,7 @@ cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
 df["change"]=df["change"].astype(cat_dtype).cat.codes
 #do one-hot endoing
 
-df=pd.get_dummies(df, columns=["house","foul_type_id","game_move_id","penalty_id","player_code","player_type"])
+df=pd.get_dummies(df, columns=["house","foul_type_id","game_move_id","penalty_id","player_code","player_type","snitchnip","stooging","gender"])
 '''
 df.drop(["house","foul_type_id","game_move_id","penalty_id","player_code","player_type"], axis=1,inplace=True)
 #do label encoding
@@ -59,6 +59,7 @@ ordered_satisfaction = ["None", "Norm", ">7", ">8", ">200", ">300"]
 cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
 df["snitchnip"]=df["snitchnip"].astype(cat_dtype).cat.codes
 df["stooging"]=df["stooging"].astype(cat_dtype).cat.codes
+'''
 '''
 #version 2
 ordered_satisfaction = ["None", "Norm",  ">200", ">300"]
@@ -71,14 +72,16 @@ df = df[df.gender != 'U']
 ordered_satisfaction = ["Female","Male"]
 cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
 df["gender"]=df["gender"].astype(cat_dtype).cat.codes
+'''
 dict=convert_move_specialty(df)
 df=map_features(["move_specialty"],df,dict)
 
-norm_columns=["age","game_duration","num_game_moves","num_game_losses","num_practice_sessions","num_games_satout","num_games_injured","num_games_notpartof","num_games_won","snitchnip","stooging"]
-#scaler = preprocessing.MinMaxScaler()
-scaler = StandardScaler()
+norm_columns=["age","game_duration","num_game_moves","num_game_losses","num_practice_sessions","num_games_satout","num_games_injured","num_games_notpartof","num_games_won"]
+scaler = preprocessing.MinMaxScaler()
+#scaler = StandardScaler()
 for i in norm_columns:
 	df[i] = scaler.fit_transform(df[i].values.reshape(-1,1))
+
 
 df_target=pd.DataFrame(data=df["quidditch_league_player"])
 df.drop(["quidditch_league_player"], axis=1,inplace=True)
