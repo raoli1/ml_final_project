@@ -1,0 +1,36 @@
+LOGISTIC REGRESSION -- STANDARD
+('average accuracy for 5 folds', 0.8882513856246236)
+('average precision for class NO', 0.8898736827610781, 'average precision for class YES', 0.47871537959089255)
+('average recall for class NO', 0.9976879094521374, 'average recall for class YES', 0.016738891040031345)
+LOGISTIC REGRESSION -- SOLVER/MULTICLASS TWEAKS
+('average accuracy for 5 folds', 0.8882217608715285)
+('average precision for class NO', 0.8899091624117628, 'average precision for class YES', 0.4752475988431044)
+('average recall for class NO', 0.9975990506869458, 'average recall for class YES', 0.017184548384564086)
+LOGISTIC REGRESSION -- SOLVER/MULTICLASS TWEAKS -- UNDERSAMPLING
+('average accuracy for 5 folds', 0.6625816255690813)
+('average precision for class NO', 0.9237020967009363, 'average precision for class YES', 0.17710541359838872)
+('average recall for class NO', 0.6760715757380475, 'average recall for class YES', 0.5551654162795171)
+LOGISTIC REGRESSION -- SOLVER/MULTICLASS TWEAKS -- OVERSAMPLING
+('average accuracy for 5 folds', 0.6711829803899103)
+('average precision for class NO', 0.9238517027991395, 'average precision for class YES', 0.18036938092211674)
+('average recall for class NO', 0.6864878294120679, 'average recall for class YES', 0.549263479750356)
+SVM
+('average accuracy for 5 folds', 0.6708175795035387)
+('average precision for class NO', 0.9229714083159959, 'average precision for class YES', 0.17895689947564528)
+('average recall for class NO', 0.6868108828589621, 'average recall for class YES', 0.5434204495373487)
+RANDOM FOREST -- STANDARD
+('average accuracy for 5 folds', 0.8867207267333489)
+('average precision for class NO', 0.8902241552916361, 'average precision for class YES', 0.37234593963720364)
+('average recall for class NO', 0.9952208676135186, 'average recall for class YES', 0.02267089690607422)
+RANDOM FOREST -- N_ESTIMATORS/MAX_DEPTH
+('average accuracy for 5 folds', 0.8884390204384612)
+('average precision for class NO', 0.8884390204384612, 'average precision for class YES', 0.0)
+('average recall for class NO', 1.0, 'average recall for class YES', 0.0)
+RANDOM FOREST -- N_ESTIMATORS/MAX_DEPTH -- UNDERSAMPLING
+('average accuracy for 5 folds', 0.625697534328216)
+('average precision for class NO', 0.9256731911765257, 'average precision for class YES', 0.16838470563004318)
+('average recall for class NO', 0.6292648554857367, 'average recall for class YES', 0.5975027768042428)
+RANDOM FOREST -- N_ESTIMATORS/MAX_DEPTH -- OVERSAMPLING
+('average accuracy for 5 folds', 0.6422090366268247)
+('average precision for class NO', 0.9247298846923089, 'average precision for class YES', 0.17224440295864799)
+('average recall for class NO', 0.6502992994285954, 'average recall for class YES', 0.5782167681859247)
