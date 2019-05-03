@@ -2,6 +2,7 @@ import pandas as pd
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
 #import csv file from the command line
 df=pd.read_csv(sys.argv[1])
 
@@ -118,6 +119,16 @@ def log_transform(df,columns):
 		df[i]+=1
 		df[i]=df[i].apply(np.log)
 
-log_transform(df,log_transform_columns)	
+log_transform(df,log_transform_columns)
+numeric_columns=["game_duration","num_game_moves","num_game_losses","num_practice_sessions","num_games_satout","num_games_injured","num_games_notpartof","num_games_won","age"]
+def standardize_numeric_value(df,columns):
+	scaler = StandardScaler()
+	for i in columns:
+
+		df[i]=scaler.fit_transform(df[i].values.reshape(-1,1))
+
+standardize_numeric_value(df,numeric_columns)
+#df["num_games_satout"].hist(bins=100)	
+#plt.show()
 df.to_csv("a.csv",index=False)
 
