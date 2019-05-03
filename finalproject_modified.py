@@ -1,5 +1,7 @@
 import pandas as pd
 import sys
+import numpy as np
+import matplotlib.pyplot as plt
 #import csv file from the command line
 df=pd.read_csv(sys.argv[1])
 
@@ -87,14 +89,35 @@ ordered_satisfaction = ["No","Ch"]
 cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
 df["change"]=df["change"].astype(cat_dtype).cat.codes
 
+#covert target
+#NO to 0, YES to 1
+
+ordered_satisfaction = ["NO","YES"]
+cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
+df["quidditch_league_player"]=df["quidditch_league_player"].astype(cat_dtype).cat.codes
+
 #one-hot encoding rest of columns
 
 df=pd.get_dummies(df, columns=["house","foul_type_id","game_move_id","penalty_id","player_code","player_type","snitchnip","stooging"])
 
 #move target to the last column
 
-df_target=pd.DataFrame(data=df["quidditch_league_player"])
+df_target=df["quidditch_league_player"]
 df.drop(["quidditch_league_player"], axis=1,inplace=True)
 df.insert(len(df.columns),"quidditch_league_player", df_target)
+
+#log transform
+
+#df["num_games_satout"].hist(bins=100)
+#plt.show()
+log_transform_columns=["num_games_satout","num_games_injured","num_games_notpartof"]
+def log_transform(df,columns):
+
+	for i in columns:
+		#add 1 to original values to perform log transform
+		df[i]+=1
+		df[i]=df[i].apply(np.log)
+
+log_transform(df,log_transform_columns)	
 df.to_csv("a.csv",index=False)
 
