@@ -17,7 +17,6 @@ for column in columns_replace:
 	df[column].replace("?","U",inplace=True)
 df["gender"].replace("Unknown/Invalid","U",inplace=True)
 df = df[df.gender != 'U']
-print (df.shape)
 
 #sum num_games_satout, num_games_injured, num_games_notpartof and combine them in one feature named num_game_not_participate
 
@@ -48,11 +47,26 @@ def convert_move_specialty(df):
 move_spec_dict=convert_move_specialty(df)
 df=map_features(["move_specialty"],df,move_spec_dict)
 
+tactics_columns=["body_blow","checking","dopplebeater_defence","hawkshead_attacking_formation","no_hands_tackle","power_play","sloth_grip_roll","spiral_dive","starfish_and_stick","twirl","wronski_feint","zig-zag","bludger_backbeat","chelmondiston_charge","dionysus_dive","reverse_pass","parkins_pincer","plumpton_pass","porskoff_ploy","transylvanian_tackle","woollongong_shimmy"]
+
+#sum up all changes
+#make a copy of dataframe
+df_tactics_change=df.copy()
+tactics_change_dict={'Steady':0,'No':0,'Up':1,'Down':1}
+df_tactics_change=map_features(tactics_columns,df_tactics_change,tactics_change_dict)
+
+df["num_tactics_change"]=0
+def sum_change_tactics(df,df_copy,columns):
+
+	for i in columns:
+
+		df["num_tactics_change"]+=df_copy[i]
+
+sum_change_tactics(df,df_tactics_change,tactics_columns)
+
 #convert tactics
 #Steady,Up,Down to 1, No to 0
-
 tactics_dict={'Steady':1,'No':0,'Up':1,'Down':1}
-tactics_columns=["body_blow","checking","dopplebeater_defence","hawkshead_attacking_formation","no_hands_tackle","power_play","sloth_grip_roll","spiral_dive","starfish_and_stick","twirl","wronski_feint","zig-zag","bludger_backbeat","chelmondiston_charge","dionysus_dive","reverse_pass","parkins_pincer","plumpton_pass","porskoff_ploy","transylvanian_tackle","woollongong_shimmy"]
 df=map_features(tactics_columns,df,tactics_dict)
 
 #sum up number of tactics used by each player
