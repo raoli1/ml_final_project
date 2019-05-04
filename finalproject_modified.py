@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 #import csv file from the command line
 df=pd.read_csv(sys.argv[1])
+print (df.shape)
 
 #drop weight, finbourgh_flick, double_eight_loop due to missing information
 
@@ -103,24 +104,24 @@ df["snitch_caught"]=df["snitch_caught"].astype(cat_dtype).cat.codes
 ordered_satisfaction = ["No","Ch"]
 cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
 df["change"]=df["change"].astype(cat_dtype).cat.codes
-'''
+
 #covert target
 #NO to 0, YES to 1
 
 ordered_satisfaction = ["NO","YES"]
 cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
 df["quidditch_league_player"]=df["quidditch_league_player"].astype(cat_dtype).cat.codes
-'''
+
 #one-hot encoding rest of columns
 
 df=pd.get_dummies(df, columns=["house","foul_type_id","game_move_id","penalty_id","player_code","player_type","snitchnip","stooging"])
-'''
+
 #move target to the last column
 
 df_target=df["quidditch_league_player"]
 df.drop(["quidditch_league_player"], axis=1,inplace=True)
 df.insert(len(df.columns),"quidditch_league_player", df_target)
-'''
+
 #log transform
 
 #df["num_total_tactics"].hist(bins=100)
@@ -142,7 +143,21 @@ def standardize_numeric_value(df,columns):
 		df[i]=scaler.fit_transform(df[i].values.reshape(-1,1))
 
 standardize_numeric_value(df,numeric_columns)
+
+#remove outliers
+def remove_outliers(df,columns):
+
+	for i in columns:
+		
+		df = df[np.abs(df[i] - df[i].mean()) <= (3 * df[i].std())]
+		
+		
+
+remove_outliers(df,numeric_columns)
+
 #df["num_games_satout"].hist(bins=100)	
 #plt.show()
+#df_corr=df.corr()
+#df_corr.to_csv("b.csv")
 df.to_csv("a.csv",index=False)
 
