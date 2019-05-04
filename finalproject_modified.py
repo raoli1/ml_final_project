@@ -8,7 +8,7 @@ df=pd.read_csv(sys.argv[1])
 
 #drop weight, finbourgh_flick, double_eight_loop due to missing information
 
-df.drop(["weight","finbourgh_flick", "double_eight_loop"], axis=1,inplace=True)
+df.drop(["weight","finbourgh_flick", "double_eight_loop","player_id"], axis=1,inplace=True)
 
 #handling missing values by creating another category
 
@@ -103,27 +103,27 @@ df["snitch_caught"]=df["snitch_caught"].astype(cat_dtype).cat.codes
 ordered_satisfaction = ["No","Ch"]
 cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
 df["change"]=df["change"].astype(cat_dtype).cat.codes
-
+'''
 #covert target
 #NO to 0, YES to 1
 
 ordered_satisfaction = ["NO","YES"]
 cat_dtype = pd.api.types.CategoricalDtype(ordered_satisfaction, ordered=True)
 df["quidditch_league_player"]=df["quidditch_league_player"].astype(cat_dtype).cat.codes
-
+'''
 #one-hot encoding rest of columns
 
 df=pd.get_dummies(df, columns=["house","foul_type_id","game_move_id","penalty_id","player_code","player_type","snitchnip","stooging"])
-
+'''
 #move target to the last column
 
 df_target=df["quidditch_league_player"]
 df.drop(["quidditch_league_player"], axis=1,inplace=True)
 df.insert(len(df.columns),"quidditch_league_player", df_target)
-
+'''
 #log transform
 
-#df["num_games_satout"].hist(bins=100)
+#df["num_total_tactics"].hist(bins=100)
 #plt.show()
 log_transform_columns=["num_games_satout","num_games_injured","num_games_notpartof"]
 def log_transform(df,columns):
@@ -134,7 +134,7 @@ def log_transform(df,columns):
 		df[i]=df[i].apply(np.log)
 
 log_transform(df,log_transform_columns)
-numeric_columns=["game_duration","num_game_moves","num_game_losses","num_practice_sessions","num_games_satout","num_games_injured","num_games_notpartof","num_games_won","age"]
+numeric_columns=["game_duration","num_game_moves","num_game_losses","num_practice_sessions","num_games_satout","num_games_injured","num_games_notpartof","num_games_won","age","num_total_tactics","num_game_not_participate","num_tactics_change"]
 def standardize_numeric_value(df,columns):
 	scaler = StandardScaler()
 	for i in columns:
